@@ -3,11 +3,14 @@ import Head from "@modules/common/components/head"
 import Layout from "@modules/layout/templates"
 import { ReactElement } from "react"
 import { NextPageWithLayout } from "types/global"
+import { LanguageSelected } from "utils/language"
 
 const Cart: NextPageWithLayout = () => {
+  const t = LanguageSelected()
+
   return (
     <>
-      <Head title="Shopping Bag" description="View your shopping bag" />
+      <Head title={t.cart.title} description={t.cart.description} />
       <CartTemplate />
     </>
   )

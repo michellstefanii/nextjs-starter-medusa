@@ -6,6 +6,7 @@ import Spinner from "@modules/common/icons/spinner"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
+import { LanguageSelected } from "utils/language"
 
 interface SignInCredentials extends FieldValues {
   email: string
@@ -17,9 +18,10 @@ const Login = () => {
   const [_, setCurrentView] = loginView
   const [authError, setAuthError] = useState<string | undefined>(undefined)
   const router = useRouter()
+  const { account } = LanguageSelected()
 
   const handleError = (_e: Error) => {
-    setAuthError("Invalid email or password")
+    setAuthError(account.login.invalidEmailOrPassword)
   }
 
   const {
@@ -45,21 +47,21 @@ const Login = () => {
           <Spinner size={24} />
         </div>
       )}
-      <h1 className="text-large-semi uppercase mb-6">Welcome back</h1>
+      <h1 className="text-large-semi uppercase mb-6">{account.login.welcomeBack}</h1>
       <p className="text-center text-base-regular text-gray-700 mb-8">
-        Sign in to access an enhanced shopping experience.
+        {account.login.signInExperience}
       </p>
       <form className="w-full" onSubmit={onSubmit}>
         <div className="flex flex-col w-full gap-y-2">
           <Input
-            label="Email"
-            {...register("email", { required: "Email is required" })}
+            label={account.login.form.email}
+            {...register("email", { required: account.login.form.emailReq })}
             autoComplete="email"
             errors={errors}
           />
           <Input
-            label="Password"
-            {...register("password", { required: "Password is required" })}
+            label={account.login.form.password}
+            {...register("password", { required: account.login.form.passwordReq })}
             type="password"
             autoComplete="current-password"
             errors={errors}
@@ -68,19 +70,19 @@ const Login = () => {
         {authError && (
           <div>
             <span className="text-rose-500 w-full text-small-regular">
-              These credentials do not match our records
+              {account.login.authError}
             </span>
           </div>
         )}
-        <Button className="mt-6">Enter</Button>
+        <Button className="mt-6">{account.login.enter}</Button>
       </form>
       <span className="text-center text-gray-700 text-small-regular mt-6">
-        Not a member?{" "}
+        {account.login.notMember}{" "}
         <button
           onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
           className="underline"
         >
-          Join us
+          {account.login.joinUs}
         </button>
         .
       </span>

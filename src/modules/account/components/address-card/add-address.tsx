@@ -9,6 +9,7 @@ import Plus from "@modules/common/icons/plus"
 import Spinner from "@modules/common/icons/spinner"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
+import { LanguageSelected } from "utils/language"
 
 type FormValues = {
   first_name: string
@@ -27,6 +28,7 @@ const AddAddress: React.FC = () => {
   const { state, open, close } = useToggleState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | undefined>(undefined)
+  const { account } = LanguageSelected()
 
   const { refetchCustomer } = useAccount()
   const {
@@ -79,7 +81,7 @@ const AddAddress: React.FC = () => {
       })
       .catch(() => {
         setSubmitting(false)
-        setError("Failed to add address, please try again.")
+        setError(account.addressCard.addAddress.addError)
       })
   })
 
@@ -89,64 +91,64 @@ const AddAddress: React.FC = () => {
         className="border border-gray-200 p-5 min-h-[220px] h-full w-full flex flex-col justify-between"
         onClick={open}
       >
-        <span className="text-base-semi">New address</span>
+        <span className="text-base-semi">{account.addressCard.addAddress.newAddress}</span>
         <Plus size={24} />
       </button>
 
       <Modal isOpen={state} close={handleClose}>
-        <Modal.Title>Add address</Modal.Title>
+        <Modal.Title>{account.addressCard.addAddress.addAddress}</Modal.Title>
         <Modal.Body>
           <div className="grid grid-cols-1 gap-y-2">
             <div className="grid grid-cols-2 gap-x-2">
               <Input
-                label="First name"
+                label={account.addressCard.form.firstName}
                 {...register("first_name", {
-                  required: "First name is required",
+                  required: account.addressCard.form.firstNameReq,
                 })}
                 required
                 errors={errors}
                 autoComplete="given-name"
               />
               <Input
-                label="Last name"
+                label={account.addressCard.form.lastName}
                 {...register("last_name", {
-                  required: "Last name is required",
+                  required: account.addressCard.form.lastNameReq,
                 })}
                 required
                 errors={errors}
                 autoComplete="family-name"
               />
             </div>
-            <Input label="Company" {...register("company")} errors={errors} />
+            <Input label={account.addressCard.form.company} {...register("company")} errors={errors} />
             <Input
-              label="Address"
+              label={account.addressCard.form.address}
               {...register("address_1", {
-                required: "Address is required",
+                required: account.addressCard.form.addressReq,
               })}
               required
               errors={errors}
               autoComplete="address-line1"
             />
             <Input
-              label="Apartment, suite, etc."
+              label={account.addressCard.form.apartment}
               {...register("address_2")}
               errors={errors}
               autoComplete="address-line2"
             />
             <div className="grid grid-cols-[144px_1fr] gap-x-2">
               <Input
-                label="Postal code"
+                label={account.addressCard.form.postalCode}
                 {...register("postal_code", {
-                  required: "Postal code is required",
+                  required: account.addressCard.form.postalCodeReq,
                 })}
                 required
                 errors={errors}
                 autoComplete="postal-code"
               />
               <Input
-                label="City"
+                label={account.addressCard.form.city}
                 {...register("city", {
-                  required: "City is required",
+                  required: account.addressCard.form.cityReq,
                 })}
                 errors={errors}
                 required
@@ -154,7 +156,7 @@ const AddAddress: React.FC = () => {
               />
             </div>
             <Input
-              label="Province / State"
+              label={account.addressCard.form.province}
               {...register("province")}
               errors={errors}
               autoComplete="address-level1"
@@ -164,7 +166,7 @@ const AddAddress: React.FC = () => {
               autoComplete="country"
             />
             <Input
-              label="Phone"
+              label={account.addressCard.form.phone}
               {...register("phone")}
               errors={errors}
               autoComplete="phone"
@@ -179,10 +181,10 @@ const AddAddress: React.FC = () => {
             className="!bg-gray-200 !text-gray-900 !border-gray-200 min-h-0"
             onClick={handleClose}
           >
-            Cancel
+            {account.addressCard.cancel}
           </Button>
           <Button className="min-h-0" onClick={submit} disabled={submitting}>
-            Save
+            {account.addressCard.save}
             {submitting && <Spinner />}
           </Button>
         </Modal.Footer>

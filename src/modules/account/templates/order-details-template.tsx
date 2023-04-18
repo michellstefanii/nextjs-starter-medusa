@@ -1,9 +1,11 @@
 import OrderCompletedTemplate from "@modules/order/templates/order-completed-template"
 import { useOrder } from "medusa-react"
 import { useRouter } from "next/router"
+import { LanguageSelected } from "utils/language"
 
 const OrderDetailsTemplate = () => {
   const router = useRouter()
+  const { account } = LanguageSelected()
 
   const { order } = router.query
 
@@ -12,7 +14,7 @@ const OrderDetailsTemplate = () => {
   })
 
   if (isLoading || !details) {
-    return <div>Loading...</div>
+    return <div>{account.orderDetailsTemplate.loading}</div>
   }
 
   return <OrderCompletedTemplate order={details} />

@@ -3,6 +3,7 @@ import { LineItem, Region } from "@medusajs/medusa"
 import clsx from "clsx"
 import { formatAmount } from "medusa-react"
 import { CalculatedVariant } from "types/medusa"
+import { LanguageSelected } from "utils/language"
 
 type LineItemPriceProps = {
   item: Omit<LineItem, "beforeInsert">
@@ -18,6 +19,7 @@ const LineItemPrice = ({
   const originalPrice =
     (item.variant as CalculatedVariant).original_price * item.quantity
   const hasReducedPrice = (item.total || 0) < originalPrice
+  const { common } = LanguageSelected()
 
   return (
     <div className="flex flex-col text-gray-700 text-right">
@@ -36,7 +38,7 @@ const LineItemPrice = ({
         <>
           <p>
             {style === "default" && (
-              <span className="text-gray-500">Original: </span>
+              <span className="text-gray-500">{common.lineItemPrice.original}: </span>
             )}
             <span className="line-through">
               {formatAmount({

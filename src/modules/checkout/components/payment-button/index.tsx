@@ -7,6 +7,7 @@ import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
 import { useCart } from "medusa-react"
 import React, { useEffect, useState } from "react"
+import { LanguageSelected } from "utils/language"
 
 type PaymentButtonProps = {
   paymentSession?: PaymentSession | null
@@ -178,6 +179,7 @@ const PayPalPaymentButton = ({
 
   const { cart } = useCart()
   const { onPaymentCompleted } = useCheckout()
+  const { checkout } = LanguageSelected()
 
   const handlePayment = async (
     _data: OnApproveData,
@@ -187,13 +189,13 @@ const PayPalPaymentButton = ({
       ?.authorize()
       .then((authorization) => {
         if (authorization.status !== "COMPLETED") {
-          setErrorMessage(`An error occurred, status: ${authorization.status}`)
+          setErrorMessage(`${checkout.paymentButton.anError} ${authorization.status}`)
           return
         }
         onPaymentCompleted()
       })
       .catch(() => {
-        setErrorMessage(`An unknown error occurred, please try again.`)
+        setErrorMessage(checkout.paymentButton.anUnknownError)
       })
       .finally(() => {
         setSubmitting(false)

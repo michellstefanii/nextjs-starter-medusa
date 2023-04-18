@@ -5,6 +5,7 @@ import { useUpdateMe } from "medusa-react"
 import React, { useEffect } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import AccountInfo from "../account-info"
+import { LanguageSelected } from "utils/language"
 
 type MyInformationProps = {
   customer: Omit<Customer, "password_hash">
@@ -18,6 +19,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
   const [errorMessage, setErrorMessage] = React.useState<string | undefined>(
     undefined
   )
+  const { account } = LanguageSelected()
 
   const {
     register,
@@ -63,7 +65,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
           refetchCustomer()
         },
         onError: () => {
-          setErrorMessage("Email already in use")
+          setErrorMessage(account.profileEmail.emailAlreadyUse)
         },
       }
     )
@@ -72,7 +74,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
   return (
     <form onSubmit={handleSubmit(updateEmail)} className="w-full">
       <AccountInfo
-        label="Email"
+        label={account.profileEmail.email}
         currentInfo={`${customer.email}`}
         isLoading={isLoading}
         isSuccess={isSuccess}
@@ -82,7 +84,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
       >
         <div className="grid grid-cols-1 gap-y-2">
           <Input
-            label="Email"
+            label={account.profileEmail.email}
             {...register("email", {
               required: true,
             })}

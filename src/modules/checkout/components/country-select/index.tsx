@@ -3,10 +3,13 @@ import NativeSelect, {
 } from "@modules/common/components/native-select"
 import { useCart, useRegions } from "medusa-react"
 import { forwardRef, useImperativeHandle, useMemo, useRef } from "react"
+import { LanguageSelected } from "utils/language"
 
 const CountrySelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
-  ({ placeholder = "Country", ...props }, ref) => {
+  ({ placeholder, ...props }, ref) => {
     const innerRef = useRef<HTMLSelectElement>(null)
+    const { checkout } = LanguageSelected()
+    const placeholderT = placeholder ?? checkout.countrySelect.country
 
     useImperativeHandle<HTMLSelectElement | null, HTMLSelectElement | null>(
       ref,
@@ -30,7 +33,7 @@ const CountrySelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
     }, [regions, cart])
 
     return (
-      <NativeSelect ref={innerRef} placeholder={placeholder} {...props}>
+      <NativeSelect ref={innerRef} placeholder={placeholderT} {...props}>
         {countryOptions.map(({ value, label }, index) => (
           <option key={index} value={value}>
             {label}

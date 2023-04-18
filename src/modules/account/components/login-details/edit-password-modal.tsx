@@ -10,6 +10,7 @@ import Spinner from "@modules/common/icons/spinner"
 import { useUpdateMe } from "medusa-react"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
+import { LanguageSelected } from "utils/language"
 
 type EditPasswordModalProps = {
   customer: Omit<Customer, "password_hash">
@@ -24,6 +25,7 @@ const EditPasswordModal: React.FC<EditPasswordModalProps> = ({ customer }) => {
   const { state, open, close } = useToggleState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | undefined>(undefined)
+  const { account } = LanguageSelected()
 
   const { mutate: update } = useUpdateMe()
 
@@ -47,7 +49,7 @@ const EditPasswordModal: React.FC<EditPasswordModalProps> = ({ customer }) => {
 
     if (data.old_password === data.new_password) {
       setSubmitting(false)
-      setError("New password must be different from old password.")
+      setError(account.loginDetails.editPassword.newDifferentOld)
       return
     }
 
@@ -61,7 +63,7 @@ const EditPasswordModal: React.FC<EditPasswordModalProps> = ({ customer }) => {
       })
 
     if (!passwordMatches) {
-      setError("Old password does not match our records.")
+      setError(account.loginDetails.editPassword.oldNotMatch)
       setSubmitting(false)
       return
     }
@@ -80,7 +82,7 @@ const EditPasswordModal: React.FC<EditPasswordModalProps> = ({ customer }) => {
         },
         onError: () => {
           setSubmitting(false)
-          setError("Unable to update password, try again later.")
+          setError(account.loginDetails.editPassword.unableUpdate)
         },
       }
     )
@@ -90,22 +92,22 @@ const EditPasswordModal: React.FC<EditPasswordModalProps> = ({ customer }) => {
     <div>
       <EditButton onClick={open} />
       <Modal isOpen={state} close={close}>
-        <Modal.Title>Edit your password</Modal.Title>
+        <Modal.Title>{account.loginDetails.editPassword.editYourPassword}</Modal.Title>
         <Modal.Body>
           <div className="flex flex-col gap-y-8">
             <Input
-              label="Old password"
+              label={account.loginDetails.editPassword.form.oldPassword}
               {...register("old_password", {
-                required: "Old password is required",
+                required: account.loginDetails.editPassword.form.oldPasswordReq,
               })}
               type="password"
               autoComplete="password"
               errors={errors}
             />
             <Input
-              label="New password"
+              label={account.loginDetails.editPassword.form.newPassword}
               {...register("new_password", {
-                required: "New password is required",
+                required: account.loginDetails.editPassword.form.newPasswordReq,
               })}
               type="password"
               autoComplete="new_password"
@@ -121,10 +123,10 @@ const EditPasswordModal: React.FC<EditPasswordModalProps> = ({ customer }) => {
             className="!bg-gray-200 !text-gray-900 !border-gray-200 min-h-0"
             onClick={close}
           >
-            Cancel
+            {account.loginDetails.editPassword.cancel}
           </Button>
           <Button className="min-h-0" onClick={submit} disabled={submitting}>
-            Save
+            {account.loginDetails.editPassword.save}
             {submitting && <Spinner />}
           </Button>
         </Modal.Footer>

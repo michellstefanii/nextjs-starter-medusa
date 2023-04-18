@@ -4,12 +4,15 @@ import Thumbnail from "@modules/products/components/thumbnail"
 import { formatAmount } from "medusa-react"
 import Link from "next/link"
 import { useMemo } from "react"
+import { LanguageSelected } from "utils/language"
 
 type OrderCardProps = {
   order: Omit<Order, "beforeInsert">
 }
 
 const OrderCard = ({ order }: OrderCardProps) => {
+  const { account } = LanguageSelected()
+
   const numberOfLines = useMemo(() => {
     return order.items.reduce((acc, item) => {
       return acc + item.quantity
@@ -60,14 +63,14 @@ const OrderCard = ({ order }: OrderCardProps) => {
             <span className="text-small-regular text-gray-700">
               + {numberOfLines - 4}
             </span>
-            <span className="text-small-regular text-gray-700">more</span>
+            <span className="text-small-regular text-gray-700">{account.orderCard.more}</span>
           </div>
         )}
       </div>
       <div className="flex justify-end">
         <Link href={`/order/details/${order.id}`}>
           <a>
-            <Button variant="secondary">See details</Button>
+            <Button variant="secondary">{account.orderCard.seeDetails}</Button>
           </a>
         </Link>
       </div>

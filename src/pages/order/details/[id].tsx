@@ -9,12 +9,14 @@ import { useRouter } from "next/router"
 import { ReactElement } from "react"
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query"
 import { NextPageWithLayout } from "types/global"
+import { LanguageSelected } from "utils/language"
 
 const fetchOrder = async (id: string) => {
   return await medusaClient.orders.retrieve(id).then(({ order }) => order)
 }
 
 const Confirmed: NextPageWithLayout = () => {
+  const t = LanguageSelected()
   const router = useRouter()
 
   const id = typeof router.query?.id === "string" ? router.query.id : ""
@@ -44,8 +46,8 @@ const Confirmed: NextPageWithLayout = () => {
     return (
       <>
         <Head
-          title={`Order #${data.display_id}`}
-          description="View your order"
+          title={`${t.order.details.title} #${data.display_id}`}
+          description={t.order.details.description}
         />
 
         <OrderDetailsTemplate order={data} />

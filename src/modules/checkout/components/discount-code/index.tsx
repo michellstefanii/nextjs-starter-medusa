@@ -7,6 +7,7 @@ import { formatAmount, useCart, useUpdateCart } from "medusa-react"
 import React, { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
+import { LanguageSelected } from "utils/language"
 
 type DiscountFormValues = {
   discount_code: string
@@ -20,6 +21,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
   const { id, discounts, region } = cart
   const { mutate, isLoading } = useUpdateCart(id)
   const { setCart } = useCart()
+  const { checkout } = LanguageSelected()
 
   const { isLoading: mutationLoading, mutate: removeDiscount } = useMutation(
     (payload: { cartId: string; code: string }) => {
@@ -42,9 +44,9 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
         })}`
 
       default:
-        return "Free shipping"
+        return checkout.discountCode.freeShipping
     }
-  }, [discounts, region])
+  }, [discounts, region, checkout])
 
   const {
     register,
@@ -66,7 +68,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
           setError(
             "discount_code",
             {
-              message: "Code is invalid",
+              message: checkout.discountCode.codeInvalid,
             },
             {
               shouldFocus: true,
@@ -91,13 +93,13 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
   return (
     <div className="w-full bg-white flex flex-col">
       <div className="mb-4">
-        <h3 className="text-base-semi">Discount</h3>
+        <h3 className="text-base-semi">{checkout.discountCode.discount}</h3>
       </div>
       <div className="text-small-regular">
         {appliedDiscount ? (
           <div className="flex items-center justify-between">
             <div>
-              <span>Code: </span>
+              <span>{checkout.discountCode.code}: </span>
               <span className="font-semibold">{appliedDiscount}</span>
             </div>
             <div>
@@ -107,7 +109,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                 disabled={isLoading}
               >
                 <Trash size={16} />
-                <span className="sr-only">Remove gift card from order</span>
+                <span className="sr-only">{checkout.discountCode.removeGiftOrder}</span>
               </button>
             </div>
           </div>
@@ -115,9 +117,9 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
           <form onSubmit={handleSubmit(onApply)} className="w-full">
             <div className="grid grid-cols-[1fr_80px] gap-x-2">
               <Input
-                label="Code"
+                label={checkout.discountCode.code}
                 {...register("discount_code", {
-                  required: "Code is required",
+                  required: checkout.discountCode.codeReq,
                 })}
                 errors={errors}
               />
@@ -127,7 +129,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                   disabled={isLoading}
                   isLoading={isLoading}
                 >
-                  Apply
+                  {checkout.discountCode.apply}
                 </Button>
               </div>
             </div>

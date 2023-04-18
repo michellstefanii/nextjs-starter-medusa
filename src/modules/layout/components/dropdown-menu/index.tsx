@@ -11,6 +11,7 @@ import { chunk } from "lodash"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import React, { useState } from "react"
+import { LanguageSelected } from "utils/language"
 
 const DropdownMenu = () => {
   const [open, setOpen] = useState(false)
@@ -19,6 +20,7 @@ const DropdownMenu = () => {
     useNavigationCollections()
   const { data: products, isLoading: loadingProducts } =
     useFeaturedProductsQuery()
+  const { layout } = LanguageSelected()
 
   return (
     <div
@@ -37,7 +39,7 @@ const DropdownMenu = () => {
                   )}
                   onClick={() => push("/store")}
                 >
-                  Store
+                  {layout.dropDownMenu.store}
                 </Popover.Button>
               </a>
             </Link>
@@ -60,7 +62,7 @@ const DropdownMenu = () => {
                   <div className="flex items-start content-container">
                     <div className="flex flex-col flex-1 max-w-[30%]">
                       <h3 className="text-base-semi text-gray-900 mb-4">
-                        Collections
+                        {layout.dropDownMenu.collections}
                       </h3>
                       <div className="flex items-start">
                         {collections &&

@@ -4,11 +4,14 @@ import Head from "@modules/common/components/head"
 import Layout from "@modules/layout/templates"
 import { ReactElement } from "react"
 import { NextPageWithLayout } from "types/global"
+import { LanguageSelected } from "utils/language"
 
 const Profile: NextPageWithLayout = () => {
+  const t = LanguageSelected()
+
   return (
     <>
-      <Head title="Profile" description="View and edit your ACME profile." />
+      <Head title={t.account.profile.title} description={t.account.profile.description} />
       <ProfileTemplate />
     </>
   )

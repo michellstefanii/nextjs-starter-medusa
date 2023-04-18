@@ -4,6 +4,7 @@ import useToggleState from "@lib/hooks/use-toggle-state"
 import { useRegions } from "medusa-react"
 import { Fragment, useEffect, useMemo, useState } from "react"
 import ReactCountryFlag from "react-country-flag"
+import { LanguageSelected } from "utils/language"
 
 type CountryOption = {
   country: string
@@ -16,6 +17,7 @@ const CountrySelect = () => {
   const { regions } = useRegions()
   const [current, setCurrent] = useState<CountryOption | undefined>(undefined)
   const { state, open, close } = useToggleState()
+  const { layout } = LanguageSelected()
 
   const options: CountryOption[] | undefined = useMemo(() => {
     return regions
@@ -53,7 +55,7 @@ const CountrySelect = () => {
       >
         <Listbox.Button className="py-1 w-full">
           <div className="text-small-regular flex items-center gap-x-2 xsmall:justify-end">
-            <span>Shipping to:</span>
+            <span>{layout.countrySelect.shippingTo}:</span>
             {current && (
               <span className="text-small-semi flex items-center gap-x-2">
                 <ReactCountryFlag

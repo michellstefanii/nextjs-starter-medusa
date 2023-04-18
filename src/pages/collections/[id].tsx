@@ -11,6 +11,7 @@ import { ParsedUrlQuery } from "querystring"
 import { ReactElement } from "react"
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query"
 import { NextPageWithLayout, PrefetchedPageProps } from "../../types/global"
+import { LanguageSelected } from "utils/language"
 
 interface Params extends ParsedUrlQuery {
   id: string
@@ -48,6 +49,7 @@ export const fetchCollectionProducts = async ({
 const CollectionPage: NextPageWithLayout<PrefetchedPageProps> = ({
   notFound,
 }) => {
+  const t = LanguageSelected()
   const { query, isFallback, replace } = useRouter()
   const id = typeof query.id === "string" ? query.id : ""
 
@@ -75,7 +77,7 @@ const CollectionPage: NextPageWithLayout<PrefetchedPageProps> = ({
   if (isSuccess) {
     return (
       <>
-        <Head title={data.title} description={`${data.title} collection`} />
+        <Head title={data.title} description={`${data.title} ${t.collections.collection}`} />
         <CollectionTemplate collection={data} />
       </>
     )

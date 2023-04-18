@@ -5,6 +5,7 @@ import Trash from "@modules/common/icons/trash"
 import { useCart } from "medusa-react"
 import React, { useMemo } from "react"
 import { useForm } from "react-hook-form"
+import { LanguageSelected } from "utils/language"
 
 type GiftCardFormValues = {
   gift_card_code: string
@@ -19,6 +20,7 @@ const GiftCard: React.FC<GiftCardProps> = ({ cart }) => {
     updateCart: { mutate, isLoading },
     setCart,
   } = useCart()
+  const { checkout } = LanguageSelected()
 
   const {
     register,
@@ -46,7 +48,7 @@ const GiftCard: React.FC<GiftCardProps> = ({ cart }) => {
           setError(
             "gift_card_code",
             {
-              message: "Code is invalid",
+              message: checkout.discountCode.codeInvalid,
             },
             {
               shouldFocus: true,
@@ -71,13 +73,13 @@ const GiftCard: React.FC<GiftCardProps> = ({ cart }) => {
   return (
     <div className="w-full bg-white p-6 flex flex-col">
       <div className="mb-4">
-        <h3 className="text-base-semi">Gift Card</h3>
+        <h3 className="text-base-semi">{checkout.discountCode.giftCard}</h3>
       </div>
       <div className="text-small-regular">
         {appliedGiftCard ? (
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-gray-700">Code: </span>
+              <span className="text-gray-700">{checkout.discountCode.code}: </span>
               <span className="font-semibold">{appliedGiftCard}</span>
             </div>
             <div>
@@ -87,7 +89,7 @@ const GiftCard: React.FC<GiftCardProps> = ({ cart }) => {
                 disabled={isLoading}
               >
                 <Trash size={16} />
-                <span className="sr-only">Remove gift card from order</span>
+                <span className="sr-only">{checkout.discountCode.removeGiftOrder}</span>
               </button>
             </div>
           </div>
@@ -95,9 +97,9 @@ const GiftCard: React.FC<GiftCardProps> = ({ cart }) => {
           <form onSubmit={handleSubmit(onSubmit)} className="w-full">
             <div className="grid grid-cols-[1fr_80px] gap-x-2">
               <Input
-                label="Code"
+                label={checkout.discountCode.code}
                 {...register("gift_card_code", {
-                  required: "Code is required",
+                  required: checkout.discountCode.codeReq,
                 })}
                 errors={errors}
                 touched={touchedFields}
@@ -108,7 +110,7 @@ const GiftCard: React.FC<GiftCardProps> = ({ cart }) => {
                   disabled={isLoading}
                   isLoading={isLoading}
                 >
-                  Apply
+                  {checkout.discountCode.apply}
                 </Button>
               </div>
             </div>

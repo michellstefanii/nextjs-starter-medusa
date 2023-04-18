@@ -9,6 +9,7 @@ import { formatAmount, useCart, useCartShippingOptions } from "medusa-react"
 import React, { useEffect, useMemo } from "react"
 import { Controller, useForm } from "react-hook-form"
 import StepContainer from "../step-container"
+import { LanguageSelected } from "utils/language"
 
 type ShippingOption = {
   value: string
@@ -26,6 +27,7 @@ type ShippingFormProps = {
 
 const Shipping: React.FC<ShippingProps> = ({ cart }) => {
   const { addShippingMethod, setCart } = useCart()
+  const { checkout } = LanguageSelected()
   const {
     control,
     setError,
@@ -60,8 +62,7 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
             "soId",
             {
               type: "validate",
-              message:
-                "An error occurred while adding shipping. Please try again.",
+              message: checkout.shipping.anErrorAddingShipping,
             },
             { shouldFocus: true }
           ),
@@ -100,7 +101,7 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
       title="Delivery"
       closedState={
         <div className="px-8 pb-8 text-small-regular">
-          <p>Enter your address to see available delivery options.</p>
+          <p>{checkout.shipping.enterYourAddress}</p>
         </div>
       }
     >

@@ -4,11 +4,14 @@ import Head from "@modules/common/components/head"
 import Layout from "@modules/layout/templates"
 import { ReactElement } from "react"
 import { NextPageWithLayout } from "types/global"
+import { LanguageSelected } from "utils/language"
 
 const Addresses: NextPageWithLayout = () => {
+  const t = LanguageSelected()
+
   return (
     <>
-      <Head title="Addresses" description="View your addresses" />
+      <Head title={t.account.addresses.title} description={t.account.addresses.description} />
       <AddressesTemplate />
     </>
   )

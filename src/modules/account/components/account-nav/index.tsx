@@ -3,10 +3,12 @@ import ChevronDown from "@modules/common/icons/chevron-down"
 import clsx from "clsx"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { LanguageSelected } from "utils/language"
 
 const AccountNav = () => {
   const { route } = useRouter()
   const { handleLogout } = useAccount()
+  const { account } = LanguageSelected()
 
   return (
     <div>
@@ -15,7 +17,7 @@ const AccountNav = () => {
           <Link href="/account">
             <a className="flex items-center gap-x-2 text-small-regular py-2">
               <ChevronDown className="transform rotate-90" />
-              <span>Account</span>
+              <span>{account.nav.account}</span>
             </a>
           </Link>
         )}
@@ -23,33 +25,33 @@ const AccountNav = () => {
       <div className="hidden small:block">
         <div>
           <div className="py-4">
-            <h3 className="text-base-semi">Account</h3>
+            <h3 className="text-base-semi">{account.nav.account}</h3>
           </div>
           <div className="text-base-regular">
             <ul className="flex mb-0 justify-start items-start flex-col gap-y-4">
               <li>
                 <AccountNavLink href="/account" route={route}>
-                  Overview
+                  {account.nav.overview}
                 </AccountNavLink>
               </li>
               <li>
                 <AccountNavLink href="/account/profile" route={route}>
-                  Profile
+                  {account.nav.profile}
                 </AccountNavLink>
               </li>
               <li>
                 <AccountNavLink href="/account/addresses" route={route}>
-                  Addresses
+                  {account.nav.addresses}
                 </AccountNavLink>
               </li>
               <li>
                 <AccountNavLink href="/account/orders" route={route}>
-                  Orders
+                  {account.nav.orders}
                 </AccountNavLink>
               </li>
               <li className="text-grey-700">
                 <button type="button" onClick={handleLogout}>
-                  Log out
+                  {account.nav.logOut}
                 </button>
               </li>
             </ul>

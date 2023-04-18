@@ -9,6 +9,7 @@ import {
   StripeCardNumberElementOptions,
 } from "@stripe/stripe-js"
 import React, { useMemo } from "react"
+import { LanguageSelected } from "utils/language"
 
 const PaymentStripe: React.FC = () => {
   const useOptions:
@@ -47,10 +48,11 @@ const CardNumber = ({
 }: {
   options: StripeCardNumberElementOptions
 }) => {
+  const { checkout } = LanguageSelected()
   return (
     <div className="border-b border-gray-200 py-2 relative">
       <span className="absolute -top-6 text-gray-700 text-base-regular">
-        Card number
+        {checkout.paymentStripe.cardNumber}
       </span>
       <CardNumberElement options={options} />
     </div>
@@ -62,10 +64,11 @@ const CardExpiry = ({
 }: {
   options: StripeCardExpiryElementOptions
 }) => {
+  const { checkout } = LanguageSelected()
   return (
     <div className="border-b border-gray-200 w-full py-2 relative">
       <span className="absolute -top-6 text-gray-700 text-base-regular">
-        Expiration date
+        {checkout.paymentStripe.expirationDate}
       </span>
       <CardExpiryElement options={options} />
     </div>

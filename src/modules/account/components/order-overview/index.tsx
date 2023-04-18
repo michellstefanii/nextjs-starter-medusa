@@ -3,9 +3,11 @@ import Spinner from "@modules/common/icons/spinner"
 import { useCustomerOrders } from "medusa-react"
 import Link from "next/link"
 import OrderCard from "../order-card"
+import { LanguageSelected } from "utils/language"
 
 const OrderOverview = () => {
   const { orders, isLoading } = useCustomerOrders()
+  const { account } = LanguageSelected()
 
   if (isLoading) {
     return (
@@ -32,13 +34,13 @@ const OrderOverview = () => {
 
   return (
     <div className="w-full flex flex-col items-center gap-y-4">
-      <h2 className="text-large-semi">Nothing to see here</h2>
+      <h2 className="text-large-semi">{account.orderOverview.nothingSeeHere}</h2>
       <p className="text-base-regular">
-        You don&apos;t have any orders yet, let us change that {":)"}
+        {account.orderOverview.anyOrdersYet}{" :)"}
       </p>
       <div className="mt-4">
         <Link href="/" passHref>
-          <Button>Continue shopping</Button>
+          <Button>{account.orderOverview.continueShopping}</Button>
         </Link>
       </div>
     </div>

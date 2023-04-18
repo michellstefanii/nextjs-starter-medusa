@@ -6,6 +6,7 @@ import clsx from "clsx"
 import Link from "next/link"
 import React, { useMemo } from "react"
 import { Product } from "types/medusa"
+import { LanguageSelected } from "utils/language"
 
 type ProductActionsProps = {
   product: Product
@@ -14,6 +15,7 @@ type ProductActionsProps = {
 const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
   const { updateOptions, addToCart, options, inStock, variant } =
     useProductActions()
+  const { products } = LanguageSelected()
 
   const price = useProductPrice({ id: product.id, variantId: variant?.id })
 
@@ -66,7 +68,9 @@ const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
             {selectedPrice.price_type === "sale" && (
               <>
                 <p>
-                  <span className="text-gray-500">Original: </span>
+                  <span className="text-gray-500">
+                    {products.productActions.original}:
+                  </span>
                   <span className="line-through">
                     {selectedPrice.original_price}
                   </span>
@@ -83,7 +87,10 @@ const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
       </div>
 
       <Button onClick={addToCart}>
-        {!inStock ? "Out of stock" : "Add to cart"}
+        {!inStock
+          ? products.productActions.outOfStock
+          : products.productActions.addToCart
+        }
       </Button>
     </div>
   )
