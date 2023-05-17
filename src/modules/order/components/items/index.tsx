@@ -5,6 +5,7 @@ import LineItemPrice from "@modules/common/components/line-item-price"
 import Thumbnail from "@modules/products/components/thumbnail"
 import SkeletonLineItem from "@modules/skeletons/components/skeleton-line-item"
 import Link from "next/link"
+import { LanguageSelected } from "utils/language"
 
 type ItemsProps = {
   items: LineItem[]
@@ -14,6 +15,7 @@ type ItemsProps = {
 
 const Items = ({ items, region, cartId }: ItemsProps) => {
   const enrichedItems = useEnrichedLineItems(items, cartId)
+  const { order } = LanguageSelected()
 
   return (
     <div className="p-10 border-b border-gray-200 gap-y-4 flex flex-col">
@@ -36,7 +38,7 @@ const Items = ({ items, region, cartId }: ItemsProps) => {
                           </Link>
                         </h3>
                         <LineItemOptions variant={item.variant} />
-                        <span>Quantity: {item.quantity}</span>
+                        <span>{order.items.quantity}: {item.quantity}</span>
                       </div>
                       <div className="flex justify-end">
                         <LineItemPrice region={region} item={item} />

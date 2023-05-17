@@ -5,6 +5,7 @@ import LineItemPrice from "@modules/common/components/line-item-price"
 import NativeSelect from "@modules/common/components/native-select"
 import Trash from "@modules/common/icons/trash"
 import Thumbnail from "@modules/products/components/thumbnail"
+import { LanguageSelected } from "utils/language"
 
 type ItemProps = {
   item: Omit<LineItem, "beforeInsert">
@@ -13,6 +14,7 @@ type ItemProps = {
 
 const Item = ({ item, region }: ItemProps) => {
   const { updateItem, deleteItem } = useStore()
+  const { cart } = LanguageSelected()
 
   return (
     <div className="grid grid-cols-[122px_1fr] gap-x-4">
@@ -62,7 +64,7 @@ const Item = ({ item, region }: ItemProps) => {
               onClick={() => deleteItem(item.id)}
             >
               <Trash size={14} />
-              <span>Remove</span>
+              <span>{cart.item.remove}</span>
             </button>
           </div>
           <div>

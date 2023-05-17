@@ -10,6 +10,7 @@ import Spinner from "@modules/common/icons/spinner"
 import { useUpdateMe } from "medusa-react"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
+import { LanguageSelected } from "utils/language"
 
 type EditEmailModalProps = {
   customer: Omit<Customer, "password_hash">
@@ -23,6 +24,7 @@ const EditEmailModal: React.FC<EditEmailModalProps> = ({ customer }) => {
   const { state, open, close } = useToggleState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | undefined>(undefined)
+  const { account } = LanguageSelected()
 
   const { mutate } = useUpdateMe()
 
@@ -44,7 +46,7 @@ const EditEmailModal: React.FC<EditEmailModalProps> = ({ customer }) => {
 
     if (data.email === customer.email) {
       setSubmitting(false)
-      setError("You must enter a new email.")
+      setError(account.loginDetails.editEmail.mustNewEmail)
       return
     }
 
@@ -58,7 +60,7 @@ const EditEmailModal: React.FC<EditEmailModalProps> = ({ customer }) => {
         },
         onError: () => {
           setSubmitting(false)
-          setError("Unable to update email, try again later.")
+          setError(account.loginDetails.editEmail.unableUpdateEmail)
         },
       }
     )
@@ -68,16 +70,16 @@ const EditEmailModal: React.FC<EditEmailModalProps> = ({ customer }) => {
     <div>
       <EditButton onClick={open} />
       <Modal isOpen={state} close={close}>
-        <Modal.Title>Edit your email</Modal.Title>
+        <Modal.Title>{account.loginDetails.editEmail.editYourEmail}</Modal.Title>
         <Modal.Body>
           <div className="flex flex-col w-full">
             <Input
-              label="Email"
+              label={account.loginDetails.editEmail.form.email}
               {...register("email", {
-                required: "Email is required",
+                required: account.loginDetails.editEmail.form.emailReq,
                 pattern: {
                   value: emailRegex,
-                  message: "Must be a valid email",
+                  message: account.loginDetails.editEmail.form.validMailReq,
                 },
               })}
               errors={errors}
@@ -92,10 +94,10 @@ const EditEmailModal: React.FC<EditEmailModalProps> = ({ customer }) => {
             className="!bg-gray-200 !text-gray-900 !border-gray-200 min-h-0"
             onClick={close}
           >
-            Cancel
+            {account.loginDetails.editEmail.cancel}
           </Button>
           <Button className="min-h-0" onClick={submit} disabled={submitting}>
-            Save
+            {account.loginDetails.editEmail.save}
             {submitting && <Spinner />}
           </Button>
         </Modal.Footer>

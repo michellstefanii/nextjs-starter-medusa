@@ -5,8 +5,11 @@ import Link from "next/link"
 import CheckoutLoader from "../components/checkout-loader"
 import CheckoutForm from "./checkout-form"
 import CheckoutSummary from "./checkout-summary"
+import { LanguageSelected } from "utils/language"
 
 const CheckoutTemplate = () => {
+  const { checkout } = LanguageSelected()
+
   return (
     <CheckoutProvider>
       <div className="bg-gray-100 relative small:min-h-screen">
@@ -16,13 +19,13 @@ const CheckoutTemplate = () => {
               <a className="text-small-semi text-gray-700 flex items-center gap-x-2 uppercase flex-1 basis-0">
                 <ChevronDown className="rotate-90" size={16} />
                 <span className="mt-px hidden small:block">
-                  Back to shopping cart
+                  {checkout.checkoutTemplate.backShoppingCard}
                 </span>
-                <span className="mt-px block small:hidden">Back</span>
+                <span className="mt-px block small:hidden">{checkout.checkoutTemplate.back}</span>
               </a>
             </Link>
             <Link href="/">
-              <a className="text-xl-semi">ACME</a>
+              <a className="text-xl-semi">{checkout.checkoutTemplate.siteName}</a>
             </Link>
             <div className="flex-1 basis-0" />
           </nav>

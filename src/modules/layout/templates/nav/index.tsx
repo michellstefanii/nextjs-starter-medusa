@@ -8,11 +8,13 @@ import clsx from "clsx"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { LanguageSelected } from "utils/language"
 
 const Nav = () => {
   const { pathname } = useRouter()
   const [isHome, setIsHome] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const { layout } = LanguageSelected()
 
   //useEffect that detects if window is scrolled > 5px on the Y axis
   useEffect(() => {
@@ -72,7 +74,7 @@ const Nav = () => {
 
           <div className="flex items-center h-full">
             <Link href="/">
-              <a className="text-xl-semi uppercase">Acme</a>
+              <a className="text-xl-semi uppercase">{layout.nav.siteName}</a>
             </Link>
           </div>
 
@@ -80,7 +82,7 @@ const Nav = () => {
             <div className="hidden small:flex items-center gap-x-6 h-full">
               {process.env.FEATURE_SEARCH_ENABLED && <DesktopSearchModal />}
               <Link href="/account">
-                <a>Account</a>
+                <a>{layout.nav.account}</a>
               </Link>
             </div>
             <CartDropdown />

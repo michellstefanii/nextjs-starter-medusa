@@ -4,6 +4,7 @@ import clsx from "clsx"
 import React from "react"
 import PaymentStripe from "../payment-stripe"
 import PaymentTest from "../payment-test"
+import { LanguageSelected } from "utils/language"
 
 type PaymentContainerProps = {
   paymentSession: PaymentSession
@@ -12,23 +13,38 @@ type PaymentContainerProps = {
   disabled?: boolean
 }
 
-const PaymentInfoMap: Record<string, { title: string; description: string }> = {
-  stripe: {
-    title: "Credit card",
-    description: "Secure payment with credit card",
-  },
-  "stripe-ideal": {
-    title: "iDEAL",
-    description: "Secure payment with iDEAL",
-  },
-  paypal: {
-    title: "PayPal",
-    description: "Secure payment with PayPal",
-  },
-  manual: {
-    title: "Test payment",
-    description: "Test payment using medusa-payment-manual",
-  },
+const { checkout } = LanguageSelected()
+
+type IPaymentInfoRes = {
+  title: string
+  description: string
+}
+
+const PaymentInfoMap = (value: string): IPaymentInfoRes | undefined => {
+  switch (value) {
+    case "stripe":
+      return {
+        title: checkout.paymentInfoMap.stripe.title,
+        description: checkout.paymentInfoMap.stripe.description,
+      }
+    case "stripe-ideal":
+      return {
+        title: checkout.paymentInfoMap.stripeIdeal.title,
+        description: checkout.paymentInfoMap.stripeIdeal.description,
+      }
+    case "paypal":
+      return {
+        title: checkout.paymentInfoMap.paypal.title,
+        description: checkout.paymentInfoMap.paypal.description,
+      }
+    case "manual":
+      return {
+        title: checkout.paymentInfoMap.manual.title,
+        description: checkout.paymentInfoMap.manual.description,
+      }
+    default:
+      return
+  }
 }
 
 const PaymentContainer: React.FC<PaymentContainerProps> = ({
@@ -54,10 +70,10 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
         <Radio checked={selected} />
         <div className="flex flex-col text-left">
           <h3 className="text-base-semi leading-none text-gray-900">
-            {PaymentInfoMap[paymentSession.provider_id].title}
+            {PaymentInfoMap(paymentSession.provider_id)?.title}
           </h3>
           <span className="text-gray-700 text-small-regular mt-2">
-            {PaymentInfoMap[paymentSession.provider_id].description}
+            {PaymentInfoMap(paymentSession.provider_id)?.description}
           </span>
           {selected && (
             <div className="w-full mt-4">

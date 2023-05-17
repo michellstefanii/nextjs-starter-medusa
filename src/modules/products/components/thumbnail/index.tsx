@@ -3,6 +3,7 @@ import PlaceholderImage from "@modules/common/icons/placeholder-image"
 import clsx from "clsx"
 import Image from "next/image"
 import React from "react"
+import { LanguageSelected } from "utils/language"
 
 type ThumbnailProps = {
   thumbnail?: string | null
@@ -35,10 +36,12 @@ const ImageOrPlaceholder = ({
   image,
   size,
 }: Pick<ThumbnailProps, "size"> & { image?: string }) => {
+  const { products } = LanguageSelected()
+
   return image ? (
     <Image
       src={image}
-      alt="Thumbnail"
+      alt={products.thumbnail.thumbnail}
       layout="fill"
       objectFit="cover"
       objectPosition="center"

@@ -4,11 +4,14 @@ import Head from "@modules/common/components/head"
 import Layout from "@modules/layout/templates"
 import { ReactElement } from "react"
 import { NextPageWithLayout } from "types/global"
+import { LanguageSelected } from "utils/language"
 
 const Account: NextPageWithLayout = () => {
+  const t = LanguageSelected()
+
   return (
     <>
-      <Head title="Account" description="Overview of your account activity." />
+      <Head title={t.account.index.title} description={t.account.index.description} />
       <OverviewTemplate />
     </>
   )

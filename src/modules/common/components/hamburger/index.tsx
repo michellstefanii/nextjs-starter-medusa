@@ -1,14 +1,17 @@
 import clsx from "clsx"
 import React from "react"
+import { LanguageSelected } from "utils/language"
 
 type HamburgerProps = {
   setOpen: () => void
 }
 
 const Hamburger: React.FC<HamburgerProps> = ({ setOpen }) => {
+  const { common } = LanguageSelected()
+
   return (
     <button className="w-10 h-10 relative focus:outline-none" onClick={setOpen}>
-      <span className="sr-only">Open main menu</span>
+      <span className="sr-only">{common.hamburger.openMainMenu}</span>
       <div className="block w-5 absolute left-1/2 top-1/2 transform  -translate-x-1/2 -translate-y-1/2">
         <span
           aria-hidden="true"

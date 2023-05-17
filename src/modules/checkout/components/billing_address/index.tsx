@@ -2,26 +2,29 @@ import { CheckoutFormValues } from "@lib/context/checkout-context"
 import ConnectForm from "@modules/common/components/connect-form"
 import Input from "@modules/common/components/input"
 import CountrySelect from "../country-select"
+import { LanguageSelected } from "utils/language"
 
 const BillingAddress = () => {
+  const { checkout } = LanguageSelected()
+
   return (
     <ConnectForm<CheckoutFormValues>>
       {({ register, formState: { errors, touchedFields } }) => (
         <div className="grid grid-cols-1 gap-y-2">
           <div className="grid grid-cols-2 gap-x-2">
             <Input
-              label="First name"
+              label={checkout.billingAddress.firstName}
               {...register("billing_address.first_name", {
-                required: "First name is required",
+                required: checkout.billingAddress.firstNameReq,
               })}
               autoComplete="given-name"
               errors={errors}
               touched={touchedFields}
             />
             <Input
-              label="Last name"
+              label={checkout.billingAddress.lastName}
               {...register("billing_address.last_name", {
-                required: "Last name is required",
+                required: checkout.billingAddress.lastNameReq,
               })}
               autoComplete="family-name"
               errors={errors}
@@ -29,23 +32,23 @@ const BillingAddress = () => {
             />
           </div>
           <Input
-            label="Company"
+            label={checkout.billingAddress.company}
             {...register("billing_address.company")}
             autoComplete="organization"
             errors={errors}
             touched={touchedFields}
           />
           <Input
-            label="Address"
+            label={checkout.billingAddress.address}
             {...register("billing_address.address_1", {
-              required: "Address is required",
+              required: checkout.billingAddress.addressReq,
             })}
             autoComplete="address-line1"
             errors={errors}
             touched={touchedFields}
           />
           <Input
-            label="Apartments, suite, etc."
+            label={checkout.billingAddress.apartments}
             {...register("billing_address.address_2")}
             autoComplete="address-line2"
             errors={errors}
@@ -53,18 +56,18 @@ const BillingAddress = () => {
           />
           <div className="grid grid-cols-[144px_1fr] gap-x-2">
             <Input
-              label="Postal code"
+              label={checkout.billingAddress.postalCode}
               {...register("billing_address.postal_code", {
-                required: "Postal code is required",
+                required: checkout.billingAddress.postalCodeReq,
               })}
               autoComplete="postal-code"
               errors={errors}
               touched={touchedFields}
             />
             <Input
-              label="City"
+              label={checkout.billingAddress.city}
               {...register("billing_address.city", {
-                required: "City is required",
+                required: checkout.billingAddress.cityReq,
               })}
               autoComplete="address-level2"
               errors={errors}
@@ -73,21 +76,21 @@ const BillingAddress = () => {
           </div>
           <CountrySelect
             {...register("billing_address.country_code", {
-              required: "Country is required",
+              required: checkout.billingAddress.countryReq,
             })}
             autoComplete="country"
             errors={errors}
             touched={touchedFields}
           />
           <Input
-            label="State / Province"
+            label={checkout.billingAddress.state}
             {...register("billing_address.province")}
             autoComplete="address-level1"
             errors={errors}
             touched={touchedFields}
           />
           <Input
-            label="Phone"
+            label={checkout.billingAddress.phone}
             {...register("billing_address.phone")}
             autoComplete="tel"
             errors={errors}

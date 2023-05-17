@@ -7,6 +7,7 @@ import {
   useState,
 } from "react"
 import { useSearchBox, UseSearchBoxProps } from "react-instantsearch-hooks-web"
+import { LanguageSelected } from "utils/language"
 
 export type ControlledSearchBoxProps = React.ComponentProps<"div"> & {
   inputRef: RefObject<HTMLInputElement>
@@ -32,12 +33,14 @@ type SearchBoxProps = {
 
 const SearchBoxWrapper = ({
   children,
-  placeholder = "Search products...",
+  placeholder = "",
   ...rest
 }: SearchBoxProps) => {
   const { query, refine, isSearchStalled } = useSearchBox(rest)
   const [value, setValue] = useState(query)
   const inputRef = useRef<HTMLInputElement>(null)
+  const { search } = LanguageSelected()
+  const placeholderText = placeholder ?? search.searchBoxWrapper.searchProducts;
 
   const onReset = () => {
     setValue("")
@@ -77,7 +80,7 @@ const SearchBoxWrapper = ({
     isSearchStalled,
     onChange,
     onReset,
-    placeholder,
+    placeholderText,
   }
 
   return children(state) as React.ReactElement

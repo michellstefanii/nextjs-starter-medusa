@@ -3,6 +3,7 @@ import useToggleState from "@lib/hooks/use-toggle-state"
 import Button from "@modules/common/components/button"
 import clsx from "clsx"
 import { useEffect } from "react"
+import { LanguageSelected } from "utils/language"
 
 type AccountInfoProps = {
   label: string
@@ -22,10 +23,12 @@ const AccountInfo = ({
   isSuccess,
   isError,
   clearState,
-  errorMessage = "An error occurred, please try again",
+  errorMessage,
   children,
 }: AccountInfoProps) => {
   const { state, close, toggle } = useToggleState()
+  const { account } = LanguageSelected()
+  const messageError = errorMessage ?? account.info.errorOccurred
 
   const handleToggle = () => {
     clearState()
@@ -58,7 +61,7 @@ const AccountInfo = ({
             onClick={handleToggle}
             type={state ? "reset" : "button"}
           >
-            {state ? "Cancel" : "Edit"}
+            {state ? account.info.cancel : account.info.edit}
           </Button>
         </div>
       </div>
@@ -76,7 +79,7 @@ const AccountInfo = ({
           )}
         >
           <div className="bg-green-100 text-green-500 p-4 my-4">
-            <span>{label} updated succesfully</span>
+            <span>{`${label} ${account.info.updateSuccessfully}`}</span>
           </div>
         </Disclosure.Panel>
       </Disclosure>
@@ -94,7 +97,7 @@ const AccountInfo = ({
           )}
         >
           <div className="bg-rose-100 text-rose-500 p-4 mt-4">
-            <span>{errorMessage}</span>
+            <span>{messageError}</span>
           </div>
         </Disclosure.Panel>
       </Disclosure>
@@ -118,7 +121,7 @@ const AccountInfo = ({
                 className="w-full small:max-w-[140px]"
                 type="submit"
               >
-                Save changes
+                {account.info.saveChanges}
               </Button>
             </div>
           </div>

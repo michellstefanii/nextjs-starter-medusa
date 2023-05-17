@@ -9,6 +9,7 @@ import clsx from "clsx"
 import React, { Fragment, useMemo } from "react"
 import { Product } from "types/medusa"
 import OptionSelect from "../option-select"
+import { LanguageSelected } from "utils/language"
 
 type MobileActionsProps = {
   product: Product
@@ -18,6 +19,7 @@ type MobileActionsProps = {
 const MobileActions: React.FC<MobileActionsProps> = ({ product, show }) => {
   const { variant, addToCart, options, inStock, updateOptions } = useProductActions()
   const { state, open, close } = useToggleState()
+  const { products } = LanguageSelected()
 
   const price = useProductPrice({ id: product.id, variantId: variant?.id })
 
@@ -75,12 +77,15 @@ const MobileActions: React.FC<MobileActionsProps> = ({ product, show }) => {
                   <span>
                     {variant
                       ? Object.values(options).join(" / ")
-                      : "Select Options"}
+                      : products.mobileActions.selectOptions}
                   </span>
                   <ChevronDown />
                 </div>
               </Button>
-              <Button onClick={addToCart}>{!inStock ? "Out of stock" : "Add to cart"}</Button>
+              <Button onClick={addToCart}>{!inStock
+                ? products.mobileActions.outOfStock
+                : products.mobileActions.addToCart}
+              </Button>
             </div>
           </div>
         </Transition>

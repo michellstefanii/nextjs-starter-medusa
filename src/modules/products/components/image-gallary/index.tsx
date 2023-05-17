@@ -1,6 +1,7 @@
 import { Image as MedusaImage } from "@medusajs/medusa"
 import Image from "next/image"
 import { useRef } from "react"
+import { LanguageSelected } from "utils/language"
 
 type ImageGalleryProps = {
   images: MedusaImage[]
@@ -8,6 +9,7 @@ type ImageGalleryProps = {
 
 const ImageGallery = ({ images }: ImageGalleryProps) => {
   const imageRefs = useRef<(HTMLDivElement | null)[]>([])
+  const { products } = LanguageSelected()
 
   const handleScrollTo = (id: string) => {
     const element = document.getElementById(id)
@@ -32,13 +34,13 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
                 handleScrollTo(image.id)
               }}
             >
-              <span className="sr-only">Go to image {index + 1}</span>
+              <span className="sr-only">{products.imageGallary.goToImage} {index + 1}</span>
               <Image
                 src={image.url}
                 layout="fill"
                 objectFit="cover"
                 className="absolute inset-0"
-                alt="Thumbnail"
+                alt={products.imageGallary.thumbnail}
               />
             </button>
           )
@@ -59,7 +61,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
                 objectFit="cover"
                 priority={index <= 2 ? true : false}
                 className="absolute inset-0"
-                alt={`Product image ${index + 1}`}
+                alt={`${products.imageGallary.productImage} ${index + 1}`}
               />
             </div>
           )

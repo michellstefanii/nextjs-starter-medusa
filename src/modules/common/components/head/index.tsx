@@ -1,5 +1,6 @@
 import NextHead from "next/head"
 import React from "react"
+import { LanguageSelected } from "utils/language"
 
 type HeadProps = {
   title?: string
@@ -8,9 +9,11 @@ type HeadProps = {
 }
 
 const Head: React.FC<HeadProps> = ({ title, description, image }) => {
+  const { common } = LanguageSelected()
+
   return (
     <NextHead>
-      <title>{title} | ACME</title>
+      <title>{title} | {common.head.titleDescription}</title>
       <meta itemProp="name" content={title} />
       {description && <meta itemProp="description" content={description} />}
       {image && <meta itemProp="image" content={image} />}

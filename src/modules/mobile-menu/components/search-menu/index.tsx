@@ -5,11 +5,13 @@ import MobileHit from "@modules/search/components/mobile-hit"
 import MobileHits from "@modules/search/components/mobile-hits"
 import SearchBox from "@modules/search/components/search-box"
 import { InstantSearch } from "react-instantsearch-hooks-web"
+import { LanguageSelected } from "utils/language"
 
 const SearchMenu = () => {
   const {
     screen: [_, setScreen],
   } = useMobileMenu()
+  const { mobileMenu } = LanguageSelected()
 
   return (
     <InstantSearch searchClient={searchClient} indexName={SEARCH_INDEX_NAME}>
@@ -26,7 +28,7 @@ const SearchMenu = () => {
               onClick={() => setScreen("main")}
               className="text-small-semi uppercase"
             >
-              Cancel
+              {mobileMenu.searchMenu.cancel}
             </button>
           </div>
         </div>

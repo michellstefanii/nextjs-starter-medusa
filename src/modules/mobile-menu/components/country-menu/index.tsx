@@ -4,12 +4,14 @@ import useCountryOptions from "@lib/hooks/use-country-options"
 import ChevronDown from "@modules/common/icons/chevron-down"
 import X from "@modules/common/icons/x"
 import ReactCountryFlag from "react-country-flag"
+import { LanguageSelected } from "utils/language"
 
 const CountryMenu = () => {
   const {
     close,
     screen: [_, setScreen],
   } = useMobileMenu()
+  const { mobileMenu } = LanguageSelected()
 
   const { setRegion } = useStore()
   const countryOptions = useCountryOptions()
@@ -31,7 +33,7 @@ const CountryMenu = () => {
           </button>
         </div>
         <div>
-          <h1 className="text-large-regular">Shipping To</h1>
+          <h1 className="text-large-regular">{mobileMenu.countryMenu.shippingTo}</h1>
         </div>
         <div className="flex-1 basis-0 flex justify-end">
           <button onClick={close}>

@@ -5,6 +5,7 @@ import { useUpdateMe } from "medusa-react"
 import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import AccountInfo from "../account-info"
+import { LanguageSelected } from "utils/language"
 
 type MyInformationProps = {
   customer: Omit<Customer, "password_hash">
@@ -20,6 +21,7 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
   const [errorMessage, setErrorMessage] = React.useState<string | undefined>(
     undefined
   )
+  const { account } = LanguageSelected()
   const {
     register,
     handleSubmit,
@@ -52,9 +54,9 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
     if (!isValid) {
       setError("old_password", {
         type: "validate",
-        message: "Old password is incorrect",
+        message: account.profilePassword.oldPasswordIncorrect,
       })
-      setErrorMessage("Old password is incorrect")
+      setErrorMessage(account.profilePassword.oldPasswordIncorrect)
 
       return
     }
@@ -62,9 +64,9 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
     if (data.new_password !== data.confirm_password) {
       setError("confirm_password", {
         type: "validate",
-        message: "Passwords do not match",
+        message: account.profilePassword.passwordsNotMatch,
       })
-      setErrorMessage("Passwords do not match")
+      setErrorMessage(account.profilePassword.passwordsNotMatch)
 
       return
     }
@@ -82,9 +84,9 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
       className="w-full"
     >
       <AccountInfo
-        label="Password"
+        label={account.profilePassword.form.password}
         currentInfo={
-          <span>The password is not shown for security reasons</span>
+          <span>{account.profilePassword.form.passwordSecurityReasons}</span>
         }
         isLoading={isLoading}
         isSuccess={isSuccess}
@@ -94,7 +96,7 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
       >
         <div className="grid grid-cols-2 gap-4">
           <Input
-            label="Old password"
+            label={account.profilePassword.form.oldPassword}
             {...register("old_password", {
               required: true,
             })}
@@ -102,13 +104,13 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
             errors={errors}
           />
           <Input
-            label="New password"
+            label={account.profilePassword.form.newPassword}
             type="password"
             {...register("new_password", { required: true })}
             errors={errors}
           />
           <Input
-            label="Confirm password"
+            label={account.profilePassword.form.confirmPassword}
             type="password"
             {...register("confirm_password", { required: true })}
             errors={errors}

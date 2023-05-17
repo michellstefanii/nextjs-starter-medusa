@@ -3,6 +3,7 @@ import Spinner from "@modules/common/icons/spinner"
 import { useEffect } from "react"
 import PaymentContainer from "../payment-container"
 import StepContainer from "../step-container"
+import { LanguageSelected } from "utils/language"
 
 const Payment = () => {
   const {
@@ -11,6 +12,7 @@ const Payment = () => {
     initPayment,
     sameAsBilling: { state: isSame },
   } = useCheckout()
+  const { checkout } = LanguageSelected()
 
   /**
    * Fallback if the payment session are not loaded properly we
@@ -35,11 +37,11 @@ const Payment = () => {
 
   return (
     <StepContainer
-      title="Payment"
+      title={checkout.payment.payment}
       index={isSame ? 3 : 4}
       closedState={
         <div className="px-8 pb-8 text-small-regular">
-          <p>Enter your address to see available payment options.</p>
+          <p>{checkout.payment.enterYoutAddress}</p>
         </div>
       }
     >
