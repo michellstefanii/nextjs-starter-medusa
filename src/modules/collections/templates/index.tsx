@@ -1,18 +1,39 @@
+"use client"
+
 import usePreviews from "@lib/hooks/use-previews"
 import getNumberOfSkeletons from "@lib/util/get-number-of-skeletons"
 import repeat from "@lib/util/repeat"
 import ProductPreview from "@modules/products/components/product-preview"
 import SkeletonProductPreview from "@modules/skeletons/components/skeleton-product-preview"
-import { fetchCollectionProducts } from "@pages/collections/[id]"
+import { useInfiniteQuery } from "@tanstack/react-query"
 import { useCart } from "medusa-react"
 import React, { useEffect } from "react"
 import { useInView } from "react-intersection-observer"
-import { useInfiniteQuery } from "@tanstack/react-query"
 
 type CollectionTemplateProps = {
   collection: {
-    id: string
+    handle: string
     title: string
+  }
+}
+
+const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+
+const fetchCollectionProducts = async ({
+  pageParam = 0,
+  handle,
+  cartId,
+}: {
+  pageParam?: number
+  handle: string
+  cartId?: string
+}) => {
+  const { response, nextPage } = await fetch(
+    `${BASEURL}/collections?handle=${handle}&cart_id=${cartId}&page=${pageParam.toString()}`
+  ).then((res) => res.json())
+  return {
+    response,
+    nextPage,
   }
 }
 
@@ -27,19 +48,25 @@ const CollectionTemplate: React.FC<CollectionTemplateProps> = ({
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-    isLoading,
+    refetch,
   } = useInfiniteQuery(
-    [`get_collection_products`, collection.id, cart?.id],
+    [`get_collection_products`, collection.handle, cart?.id],
     ({ pageParam }) =>
       fetchCollectionProducts({
         pageParam,
-        id: collection.id,
+        handle: collection.handle,
         cartId: cart?.id,
       }),
     {
       getNextPageParam: (lastPage) => lastPage.nextPage,
     }
   )
+
+  useEffect(() => {
+    if (cart?.region_id) {
+      refetch()
+    }
+  }, [cart?.region_id, refetch])
 
   const previews = usePreviews({
     pages: infiniteData?.pages,
@@ -64,13 +91,6 @@ const CollectionTemplate: React.FC<CollectionTemplateProps> = ({
             <ProductPreview {...p} />
           </li>
         ))}
-        {isLoading &&
-          !previews.length &&
-          repeat(8).map((index) => (
-            <li key={index}>
-              <SkeletonProductPreview />
-            </li>
-          ))}
         {isFetchingNextPage &&
           repeat(getNumberOfSkeletons(infiniteData?.pages)).map((index) => (
             <li key={index}>

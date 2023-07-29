@@ -4,7 +4,7 @@ import Button from "@modules/common/components/button"
 import Input from "@modules/common/components/input"
 import Spinner from "@modules/common/icons/spinner"
 import Link from "next/link"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 
@@ -99,12 +99,12 @@ const Register = () => {
         )}
         <span className="text-center text-gray-700 text-small-regular mt-6">
           By creating an account, you agree to Acme&apos;s{" "}
-          <Link href="/content/privacy-policy">
-            <a className="underline">Privacy Policy</a>
+          <Link href="/content/privacy-policy" className="underline">
+            Privacy Policy
           </Link>{" "}
           and{" "}
-          <Link href="/content/terms-of-use">
-            <a className="underline">Terms of Use</a>
+          <Link href="/content/terms-of-use" className="underline">
+            Terms of Use
           </Link>
           .
         </span>

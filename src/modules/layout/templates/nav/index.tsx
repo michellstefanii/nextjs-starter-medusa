@@ -1,3 +1,5 @@
+"use client"
+
 import { useMobileMenu } from "@lib/context/mobile-menu-context"
 import Hamburger from "@modules/common/components/hamburger"
 import CartDropdown from "@modules/layout/components/cart-dropdown"
@@ -6,11 +8,11 @@ import MobileMenu from "@modules/mobile-menu/templates"
 import DesktopSearchModal from "@modules/search/templates/desktop-search-modal"
 import clsx from "clsx"
 import Link from "next/link"
-import { useRouter } from "next/router"
+import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 
 const Nav = () => {
-  const { pathname } = useRouter()
+  const pathname = usePathname()
   const [isHome, setIsHome] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
 
@@ -71,17 +73,15 @@ const Nav = () => {
           </div>
 
           <div className="flex items-center h-full">
-            <Link href="/">
-              <a className="text-xl-semi uppercase">Acme</a>
+            <Link href="/" className="text-xl-semi uppercase">
+              Acme
             </Link>
           </div>
 
           <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
             <div className="hidden small:flex items-center gap-x-6 h-full">
               {process.env.FEATURE_SEARCH_ENABLED && <DesktopSearchModal />}
-              <Link href="/account">
-                <a>Account</a>
-              </Link>
+              <Link href="/account">Account</Link>
             </div>
             <CartDropdown />
           </div>
